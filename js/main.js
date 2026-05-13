@@ -220,3 +220,19 @@ function gameLoop(timestamp) {
 
 init();
 requestAnimationFrame(gameLoop);
+
+// 全局错误捕获 — 直接显示在页面上
+window.onerror = function(msg, url, line, col, err) {
+  const d = document.createElement('div');
+  d.style.cssText = 'position:fixed;top:10px;left:10px;right:10px;background:#F87171;color:#FFF;padding:12px;border-radius:8px;z-index:9999;font-size:13px;word-break:break-all;';
+  d.innerHTML = `<b>❌ 错误</b><br>${msg}<br>行${line}:${col}`;
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 10000);
+};
+window.addEventListener('unhandledrejection', function(e) {
+  const d = document.createElement('div');
+  d.style.cssText = 'position:fixed;top:10px;left:10px;right:10px;background:#FB923C;color:#FFF;padding:12px;border-radius:8px;z-index:9999;font-size:13px;word-break:break-all;';
+  d.innerHTML = `<b>❌ Promise错误</b><br>${e.reason}`;
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 10000);
+});
