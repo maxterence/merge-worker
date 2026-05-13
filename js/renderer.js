@@ -100,36 +100,47 @@ export class Renderer {
     const ctx = this.ctx;
     const level = LEVELS[data.level];
     const quality = QUALITIES[data.quality];
+    const w = radius * 2.2;
+    const h = radius * 2.6;
+    const r = 8;
+    const left = x - w / 2;
+    const top = y - h / 2;
 
-    // 品质光圈
+    // 品质外框
     ctx.beginPath();
-    ctx.arc(x, y, radius + 4, 0, Math.PI * 2);
-    ctx.fillStyle = quality.color + '40';
-    ctx.fill();
-    ctx.strokeStyle = quality.color;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // 背景圆
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
-    ctx.fillStyle = level.color;
+    ctx.roundRect(left - 3, top - 3, w + 6, h + 6, r + 2);
+    ctx.fillStyle = quality.color + '30';
     ctx.fill();
     ctx.strokeStyle = quality.color;
     ctx.lineWidth = 2.5;
     ctx.stroke();
 
+    // 主体圆角矩形
+    ctx.beginPath();
+    ctx.roundRect(left, top, w, h, r);
+    ctx.fillStyle = level.color;
+    ctx.fill();
+    ctx.strokeStyle = quality.color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
     // Emoji
-    ctx.font = `${radius}px sans-serif`;
+    ctx.font = `${radius * 0.9}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(level.emoji, x, y);
+    ctx.fillText(data.emoji || level.emoji, x, y - 2);
 
-    // 品质标签
-    if (data.quality !== 'B') {
-      ctx.font = 'bold 10px sans-serif';
-      ctx.fillStyle = quality.color;
-      ctx.fillText(quality.label, x + radius - 2, y - radius + 2);
+    // 等级文字
+    ctx.font = `bold 9px sans-serif`;
+    ctx.fillStyle = '#1A1A2E';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(`Lv${data.level}`, x, top + h - 4);
+
+    // SS 特效
+    if (data.quality === 'SS') {
+      ctx.font = '10px sans-serif';
+      ctx.fillText('✨', left + 4, top + 10);
     }
   }
 
