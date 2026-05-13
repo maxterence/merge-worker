@@ -469,6 +469,9 @@ export class Game {
     this.physics.update(dt);
     this.particles.update();
 
+    // 红线检测
+    this.checkRedLine();
+
     // 碰撞检测
     const collisions = this.physics.detectCollisions();
     for (const { a, b, overlap } of collisions) {
@@ -486,6 +489,42 @@ export class Game {
       }
       if (b.data.type === 'worker' && a.data.type === 'powerup') {
         this.pickupPowerup(a);
+      }
+    }
+  }
+
+  // 红线检测：有物品超过红线就扣时间
+  checkRedLine() {
+    const redLineY = this.renderer.redLineY;
+    const warningZone = redLineY + 30; // 红线以下30px为警告区
+    let anyAboveRed = false;
+    let anyNearRed = false;
+
+    for (const body of this.physics.bodies) {
+      if (body.data.type !== 'worker') continue;
+      const topEdge = body.y - body.radius;
+
+      if (topEdge < redLineY) {
+        anyAboveRed = true;
+      }
+      if (topEdge < warningZone) {
+        anyNearRed = true;
+      }
+    }
+
+    // 显示/隐藏警告
+    this.renderer.showWarning = anyNearRed;
+
+    // 超过红线扣时间（每秒扣1秒）
+    if (anyAboveRed && !this._redLinePenaltyCd) {
+      this.timeLeft = Math.max(0, this.timeLeft - 1);
+      this.onTimeChange?.(this.timeLeft);
+      this._redLinePenaltyCd = true;
+      setTimeout(() => { this._redLinePenaltyCd = false; }, 1000);
+
+      if (this.timeLeft <= 0) {
+        this.stop();
+        this.onGameOver?.(this.score);
       }
     }
   }

@@ -13,6 +13,7 @@ export class Renderer {
     this.height = 0;
     this.redLineY = 0;
     this.dpr = 1;
+    this.showWarning = false;
   }
 
   resize() {
@@ -49,10 +50,16 @@ export class Renderer {
       }
     }
 
+    // 红线区域背景（警告区）
+    if (this.showWarning) {
+      ctx.fillStyle = 'rgba(248, 113, 113, 0.15)';
+      ctx.fillRect(0, 0, this.width, this.redLineY);
+    }
+
     // 红线
-    ctx.setLineDash([8, 6]);
-    ctx.strokeStyle = '#F87171';
-    ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.strokeStyle = this.showWarning ? '#EF4444' : '#F87171';
+    ctx.lineWidth = this.showWarning ? 4 : 2;
     ctx.beginPath();
     ctx.moveTo(0, this.redLineY);
     ctx.lineTo(this.width, this.redLineY);
@@ -60,10 +67,10 @@ export class Renderer {
     ctx.setLineDash([]);
 
     // 红线文字
-    ctx.font = '11px sans-serif';
-    ctx.fillStyle = '#F87171';
+    ctx.font = this.showWarning ? 'bold 13px sans-serif' : '11px sans-serif';
+    ctx.fillStyle = this.showWarning ? '#EF4444' : '#F87171';
     ctx.textAlign = 'right';
-    ctx.fillText('⚠️ 红线', this.width - 8, this.redLineY - 6);
+    ctx.fillText(this.showWarning ? '⚠️ 危险！' : '⚠️ 红线', this.width - 8, this.redLineY - 6);
 
     // 地面线
     ctx.strokeStyle = '#1A1A2E';
