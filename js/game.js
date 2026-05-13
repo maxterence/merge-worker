@@ -106,8 +106,11 @@ export class Game {
     const itemB = this.items.find(i => i.bodyId === bodyB.id);
     if (!itemA || !itemB) return false;
 
-    // SS 万能合成
-    if (itemA.quality === 'SS' || itemB.quality === 'SS') {
+    // SS 万能合成：同等级可合成（品质不限）
+    if (itemA.quality === 'SS' && itemA.level === itemB.level) {
+      return this.executeMerge(itemA, itemB, bodyA, bodyB);
+    }
+    if (itemB.quality === 'SS' && itemA.level === itemB.level) {
       return this.executeMerge(itemA, itemB, bodyA, bodyB);
     }
 
