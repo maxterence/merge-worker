@@ -37,6 +37,11 @@ function init() {
   enterState(STATE.HOME);
 }
 
+// ===== 开始游戏 =====
+function startLevel1() {
+  enterState(STATE.LEVEL1);
+}
+
 // ===== 状态切换 =====
 function enterState(state) {
   currentState = state;
