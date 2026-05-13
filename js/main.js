@@ -55,12 +55,13 @@ function enterState(state) {
 
     case STATE.LEVEL1:
       document.getElementById('screen-level1').classList.add('active');
-      setupLevel1();
+      // 等浏览器布局完成再初始化 Canvas
+      requestAnimationFrame(() => setupLevel1());
       break;
 
     case STATE.LEVEL2:
       document.getElementById('screen-level2').classList.add('active');
-      setupLevel2();
+      requestAnimationFrame(() => setupLevel2());
       break;
 
     case STATE.RESULT:
@@ -73,7 +74,14 @@ function enterState(state) {
 // ===== 第一关：试用期 =====
 function setupLevel1() {
   currentLevelCanvas = document.getElementById('game-canvas');
-  physics = new Physics(currentLevelCanvas.clientWidth, currentLevelCanvas.clientHeight);
+  const rect = currentLevelCanvas.getBoundingClientRect();
+  console.log('Canvas rect:', rect.width, rect.height);
+  if (rect.width === 0 || rect.height === 0) {
+    // Canvas 还没布局好，重试
+    requestAnimationFrame(() => setupLevel1());
+    return;
+  }
+  physics = new Physics(rect.width, rect.height);
   renderer = new Renderer(currentLevelCanvas);
   renderer.resize();
 
@@ -129,7 +137,12 @@ function setupLevel1() {
 // ===== 第二关：正式工 =====
 function setupLevel2() {
   currentLevelCanvas = document.getElementById('game-canvas-2');
-  physics = new Physics(currentLevelCanvas.clientWidth, currentLevelCanvas.clientHeight);
+  const rect = currentLevelCanvas.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) {
+    requestAnimationFrame(() => setupLevel2());
+    return;
+  }
+  physics = new Physics(rect.width, rect.height);
   renderer = new Renderer(currentLevelCanvas);
   renderer.resize();
 
