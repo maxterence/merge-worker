@@ -24,7 +24,7 @@ export class Renderer {
     this.canvas.height = this.height * this.dpr;
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     this.redLineY = this.height * 0.3;
-    this.groundY = this.height - 10;
+    this.groundY = this.height - 30;
   }
 
   clear() {
