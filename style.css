@@ -23,15 +23,17 @@
   --red: #F87171;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
   background: var(--bg);
   color: var(--text);
-  overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
-  min-height: 100vh;
-  min-height: 100dvh;
   position: relative;
 }
 
@@ -67,11 +69,12 @@ body::after {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  position: relative;
+  height: 100%;
+  position: fixed;
+  top: 0; left: 0;
   z-index: 1;
   padding: 20px;
+  overflow: hidden;
 }
 
 .screen.active {
