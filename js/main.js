@@ -103,14 +103,6 @@ function setupLevel1() {
   };
 
   console.log('Level1 初始化完成');
-
-  // 测试 Canvas 是否能画东西
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'red';
-  ctx.fillRect(10, 10, 50, 50);
-  ctx.font = '20px sans-serif';
-  ctx.fillStyle = 'black';
-  ctx.fillText('Canvas OK', 80, 40);
 }
 
 function setupLevel2() {
