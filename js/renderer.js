@@ -115,8 +115,8 @@ export class Renderer {
     ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fillStyle = level.color;
     ctx.fill();
-    ctx.strokeStyle = '#1A1A2E';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = quality.color;
+    ctx.lineWidth = 2.5;
     ctx.stroke();
 
     // Emoji
