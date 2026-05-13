@@ -502,6 +502,7 @@ export class Game {
 
     for (const body of this.physics.bodies) {
       if (body.data.type !== 'worker') continue;
+      if (!body.grounded) continue; // 只检查已落地的物品
       const topEdge = body.y - body.radius;
 
       if (topEdge < redLineY) {
