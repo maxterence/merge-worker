@@ -76,8 +76,6 @@ export class InputHandler {
   }
 
   _onEnd(e) {
-    const elapsed = Date.now() - this._startTime;
-
     // 清除长按计时器
     if (this._timer) {
       clearTimeout(this._timer);

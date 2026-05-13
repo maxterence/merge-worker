@@ -14,6 +14,7 @@ export class Tutorial {
     this.currentText = '';
     this.dropCount = 0;
     this.mergeCount = 0;
+    this.highestLevel = 0;
     this.idleTimer = null;
     this.idleFired = false;
     this.complete = false;
@@ -24,36 +25,54 @@ export class Tutorial {
     this.currentText = this.stages[0].text;
     this.dropCount = 0;
     this.mergeCount = 0;
+    this.highestLevel = 0;
     this.idleTimer = null;
     this.idleFired = false;
     this.complete = false;
     this.startIdleWatch();
   }
 
-  // 玩家掉落了一个物品
   onDrop() {
     this.dropCount++;
-    if (this.dropCount === 3 && this.currentText === this.stages[0].text) {
-      this.currentText = this.stages[1].text;
-    }
+    this.idleFired = false;
     this.resetIdle();
   }
 
-  // 发生了一次合成
   onMerge(newLevel) {
     this.mergeCount++;
-    if (this.mergeCount === 1 && this.currentText === this.stages[1].text) {
-      this.currentText = this.stages[2].text;
-    }
-    if (newLevel >= 1 && this.currentText === this.stages[2].text) {
-      this.currentText = this.stages[3].text;
-    }
+    this.highestLevel = Math.max(this.highestLevel, newLevel);
+    this.idleFired = false;
+
     if (newLevel >= 2) {
       this.complete = true;
       this.currentText = '';
       this.onComplete?.();
+      this.resetIdle();
+      return;
     }
+
     this.resetIdle();
+  }
+
+  /**
+   * 根据当前游戏进度选择合适的提示文本
+   */
+  getText() {
+    if (this.complete) return '';
+
+    if (this.mergeCount > 0 && this.highestLevel >= 1) {
+      return this.stages[3].text; // "还差一步！再升一级就过关了"
+    }
+    if (this.mergeCount > 0) {
+      return this.stages[2].text; // "对了！继续合成到组长过关"
+    }
+    if (this.dropCount >= 3) {
+      return this.stages[1].text; // "让相同的人碰在一起 → 合成升级"
+    }
+    if (this.idleFired) {
+      return this.stages[4].text; // "试试长按 — 可以连续掉落哦"
+    }
+    return this.stages[0].text; // "点击空白处掉落打工人 💼"
   }
 
   startIdleWatch() {
@@ -62,15 +81,11 @@ export class Tutorial {
 
   resetIdle() {
     clearTimeout(this.idleTimer);
+    if (this.complete) return;
     this.idleTimer = setTimeout(() => {
-      if (!this.idleFired && !this.complete) {
+      if (!this.complete) {
         this.idleFired = true;
-        this.currentText = this.stages[4].text;
       }
     }, 5000);
-  }
-
-  getText() {
-    return this.complete ? '' : this.currentText;
   }
 }

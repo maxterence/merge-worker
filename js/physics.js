@@ -11,7 +11,6 @@ export class Physics {
     this.gravity = 0.3;
     this.friction = 0.98;
     this.groundY = height - 10;
-    this红线Y = height * 0.3;
   }
 
   // 创建物理体

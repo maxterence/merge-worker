@@ -197,7 +197,14 @@ export class Renderer {
     const x = (this.width - w) / 2;
 
     ctx.beginPath();
-    ctx.roundRect(x, y - 14, w, 28, 14);
+    ctx.moveTo(x + 14, y - 14);
+    ctx.lineTo(x + w - 14, y - 14);
+    ctx.arcTo(x + w, y - 14, x + w, y, 14);
+    ctx.arcTo(x + w, y + 14, x + w - 14, y + 14, 14);
+    ctx.lineTo(x + 14, y + 14);
+    ctx.arcTo(x, y + 14, x, y, 14);
+    ctx.arcTo(x, y - 14, x + 14, y - 14, 14);
+    ctx.closePath();
     ctx.fill();
 
     ctx.font = '14px "ZCOOL KuaiLe", sans-serif';
