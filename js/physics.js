@@ -68,6 +68,21 @@ export class Physics {
         b.grounded = true;
       }
     }
+
+    // 强制钳位：所有body都不能超出边界（防止碰撞弹开后越界）
+    for (const b of this.bodies) {
+      if (b.y + b.radius > this.groundY) {
+        b.y = this.groundY - b.radius;
+        b.vy = 0;
+        b.grounded = true;
+      }
+      if (b.y - b.radius < 0) {
+        b.y = b.radius;
+        b.vy = Math.abs(b.vy);
+      }
+      if (b.x - b.radius < 0) b.x = b.radius;
+      if (b.x + b.radius > this.width) b.x = this.width - b.radius;
+    }
   }
 
   // 碰撞检测 — 返回碰撞对
