@@ -33,26 +33,26 @@ export const MERGE_QUALITY_TABLE = {
 
 // 道具表
 export const ITEMS = [
-  { id: 'overtime',   name: '加班卡',   emoji: '⏰', effect: 'time+10',    rate: 0.15 },
-  { id: 'promote',    name: '晋升卡',   emoji: '📈', effect: 'levelUp',    rate: 0.08 },
-  { id: 'merge',      name: '合并卡',   emoji: '🔗', effect: 'autoMerge',  rate: 0.12 },
-  { id: 'fire',       name: '裁员卡',   emoji: '💀', effect: 'removeLow',  rate: 0.10 },
-  { id: 'insurance',  name: '五险一金', emoji: '🛡️', effect: 'nextS',      rate: 0.05 },
-  { id: 'bonus',      name: '年终奖',   emoji: '🎁', effect: 'scoreBonus', rate: 0.06 },
+  { id: 'overtime',   name: '加班卡',   emoji: '⏰', effect: 'time+10',    rate: 0.15, desc: '时间 +10秒' },
+  { id: 'promote',    name: '晋升卡',   emoji: '📈', effect: 'levelUp',    rate: 0.08, desc: '随机一个物品升一级' },
+  { id: 'merge',      name: '合并卡',   emoji: '🔗', effect: 'autoMerge',  rate: 0.12, desc: '自动合并一组同级物品' },
+  { id: 'fire',       name: '裁员卡',   emoji: '💀', effect: 'removeLow',  rate: 0.10, desc: '消除一个最低级物品' },
+  { id: 'insurance',  name: '五险一金', emoji: '🛡️', effect: 'nextS',      rate: 0.05, desc: '下次合成保底S级品质' },
+  { id: 'bonus',      name: '年终奖',   emoji: '🎁', effect: 'scoreBonus', rate: 0.06, desc: '立即获得当前年薪×50%分数' },
 ];
 
 // 职场随机事件
 export const EVENTS = [
-  { id: 'boss_check',   name: '老板突击检查', emoji: '👁️', effect: 'stopDrop3s',   type: 'neutral' },
-  { id: 'slack',        name: '带薪摸鱼',     emoji: '😴', effect: 'slowDrop5s',   type: 'good' },
-  { id: 'blame',        name: '同事甩锅',     emoji: '💩', effect: 'levelDown',    type: 'bad' },
-  { id: 'overtime_night',name: '加班通知',     emoji: '🌙', effect: 'time+15',      type: 'good' },
-  { id: 'team_build',   name: '团建来了',     emoji: '🎉', effect: 'mergeAllSame', type: 'good' },
-  { id: 'layoff',       name: '裁员风波',     emoji: '⚠️', effect: 'removeLowest', type: 'bad' },
-  { id: 'review',       name: '年终述职',     emoji: '📋', effect: 'dropAPlus10s', type: 'good' },
-  { id: 'pie',          name: '领导画饼',     emoji: '🫓', effect: 'nextS',        type: 'good' },
-  { id: '996',          name: '996福报',      emoji: '💀', effect: 'time-5',       type: 'bad' },
-  { id: 'vacation',     name: '带薪休假',     emoji: '🏖️', effect: 'pauseDrop5s',  type: 'good' },
+  { id: 'boss_check',   name: '老板突击检查', emoji: '👁️', effect: 'stopDrop3s',   type: 'neutral', desc: '停止掉落 3秒' },
+  { id: 'slack',        name: '带薪摸鱼',     emoji: '😴', effect: 'slowDrop5s',   type: 'good', desc: '掉落速度减半 5秒' },
+  { id: 'blame',        name: '同事甩锅',     emoji: '💩', effect: 'levelDown',    type: 'bad', desc: '随机一个物品降一级' },
+  { id: 'overtime_night',name: '加班通知',     emoji: '🌙', effect: 'time+15',      type: 'good', desc: '时间 +15秒' },
+  { id: 'team_build',   name: '团建来了',     emoji: '🎉', effect: 'mergeAllSame', type: 'good', desc: '场上所有同级物品自动合并' },
+  { id: 'layoff',       name: '裁员风波',     emoji: '⚠️', effect: 'removeLowest', type: 'bad', desc: '场上最低级物品全部消失' },
+  { id: 'review',       name: '年终述职',     emoji: '📋', effect: 'dropAPlus10s', type: 'good', desc: '接下来10秒掉落的都是A级以上' },
+  { id: 'pie',          name: '领导画饼',     emoji: '🫓', effect: 'nextS',        type: 'good', desc: '下一个掉落必定是S级' },
+  { id: '996',          name: '996福报',      emoji: '💀', effect: 'time-5',       type: 'bad', desc: '时间 -5秒' },
+  { id: 'vacation',     name: '带薪休假',     emoji: '🏖️', effect: 'pauseDrop5s',  type: 'good', desc: '掉落暂停5秒' },
 ];
 
 // 游戏配置

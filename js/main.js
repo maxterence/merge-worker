@@ -133,6 +133,7 @@ function setupLevel2() {
   };
   game.onChairmanEffect = () => showChairmanEffect();
   game.onEventTriggered = (e) => showEventPopup(e);
+  game.onItemPickup = (item) => showItemPopup(item);
   game.onGameOver = (s) => {
     highScore = Math.max(highScore, s);
     saveHighScore(highScore);
@@ -182,9 +183,18 @@ function showChairmanEffect() {
 function showEventPopup(event) {
   const p = document.createElement('div');
   p.className = 'event-popup';
-  p.innerHTML = `<span class="emoji">${event.emoji}</span><span class="name">${event.name}</span>`;
+  const typeColor = event.type === 'good' ? '#34D399' : event.type === 'bad' ? '#F87171' : '#666';
+  p.innerHTML = `<span class="emoji">${event.emoji}</span><span class="name">${event.name}</span><div style="font-size:13px;color:${typeColor};margin-top:4px;">${event.desc}</div>`;
   document.body.appendChild(p);
   setTimeout(() => p.remove(), 2000);
+}
+
+function showItemPopup(item) {
+  const p = document.createElement('div');
+  p.className = 'event-popup';
+  p.innerHTML = `<span class="emoji">${item.emoji}</span><span class="name">${item.name}</span><div style="font-size:13px;color:#FB923C;margin-top:4px;">${item.desc}</div>`;
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 1500);
 }
 
 function updateHighScoreDisplay() {

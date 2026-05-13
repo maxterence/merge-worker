@@ -226,6 +226,7 @@ export class Game {
 
     this.physics.removeBody(body.id);
     this.particles.emitFlash(body.x, body.y, '#FBBF24', 10);
+    this.onItemPickup?.(item);
 
     switch (item.id) {
       case 'overtime': // +10秒
