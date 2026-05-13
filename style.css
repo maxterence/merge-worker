@@ -1,0 +1,494 @@
+/* ============================================
+   合成打工人 - 手绘涂鸦风样式
+   ============================================ */
+
+/* ---------- Reset & Base ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg: #FFF8F0;
+  --text: #1A1A2E;
+  --primary: #FB923C;
+  --border: #1A1A2E;
+  --shadow: #1A1A2E;
+  --green: #34D399;
+  --blue: #60A5FA;
+  --purple: #A78BFA;
+  --gold: #FBBF24;
+  --red: #F87171;
+}
+
+body {
+  font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* ---------- 纸张背景 + 圆点纹理 ---------- */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(circle, #E8DDD0 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(251,146,60,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(96,165,250,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(167,139,250,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Screen ---------- */
+.screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* ---------- 首页 ---------- */
+#screen-home {
+  gap: 24px;
+}
+
+#screen-home h1 {
+  font-size: 42px;
+  color: var(--primary);
+  text-shadow: 3px 3px 0 var(--shadow);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #666;
+  margin-top: -12px;
+}
+
+.high-score {
+  background: #FFF;
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 18px;
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.btn-main {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 22px;
+  padding: 14px 40px;
+  background: var(--primary);
+  color: #FFF;
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--shadow);
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  top: 0;
+}
+
+.btn-main:active {
+  top: 3px;
+  left: 3px;
+  box-shadow: 1px 1px 0 var(--shadow);
+}
+
+.btn-secondary {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 18px;
+  padding: 10px 28px;
+  background: #FFF;
+  color: var(--text);
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 var(--shadow);
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  top: 0;
+}
+
+.btn-secondary:active {
+  top: 2px;
+  left: 2px;
+  box-shadow: 1px 1px 0 var(--shadow);
+}
+
+.level-bar {
+  font-size: 22px;
+  letter-spacing: 4px;
+  color: #999;
+  margin-top: 12px;
+}
+
+/* ---------- HUD ---------- */
+.hud-level1, .hud-level2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.85);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 16px;
+  box-shadow: 2px 2px 0 var(--shadow);
+  margin-bottom: 8px;
+  z-index: 10;
+}
+
+/* ---------- Canvas ---------- */
+#game-canvas, #game-canvas-2 {
+  width: 100%;
+  max-width: 400px;
+  flex: 1;
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 4px 4px 0 var(--shadow);
+  touch-action: none;
+}
+
+/* ---------- 教学引导条 ---------- */
+.tutorial-bar {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 26, 46, 0.85);
+  color: #FFF;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 15px;
+  white-space: nowrap;
+  z-index: 20;
+  animation: tutorialPulse 2s ease-in-out infinite;
+}
+
+.tutorial-bar:empty {
+  display: none;
+}
+
+@keyframes tutorialPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ---------- 道具栏 ---------- */
+.item-bar {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.85);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 2px 2px 0 var(--shadow);
+  margin-bottom: 6px;
+  z-index: 10;
+  min-height: 40px;
+}
+
+.item-bar .item-slot {
+  width: 36px;
+  height: 36px;
+  border: 2px dashed #CCC;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  position: relative;
+}
+
+.item-slot .count {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: var(--primary);
+  color: #FFF;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+}
+
+/* ---------- 结算页 ---------- */
+#screen-result {
+  gap: 16px;
+  text-align: center;
+}
+
+#screen-result h2 {
+  font-size: 36px;
+  color: var(--red);
+  text-shadow: 3px 3px 0 var(--shadow);
+}
+
+#result-level {
+  font-size: 20px;
+}
+
+#result-score {
+  font-size: 28px;
+  color: var(--primary);
+  text-shadow: 2px 2px 0 var(--shadow);
+}
+
+#result-percent {
+  font-size: 16px;
+  color: #666;
+}
+
+.quote {
+  background: #FFF;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+  max-width: 300px;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+/* ---------- 红线警告 ---------- */
+.red-line {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--red) 0, var(--red) 8px,
+    transparent 8px, transparent 16px
+  );
+  z-index: 5;
+}
+
+.red-line::before {
+  content: '⚠️ 红线';
+  position: absolute;
+  right: 8px;
+  top: -18px;
+  font-size: 11px;
+  color: var(--red);
+}
+
+/* ---------- 飘字动画 ---------- */
+.float-text {
+  position: absolute;
+  pointer-events: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #FFF;
+  text-shadow: 1px 1px 0 var(--shadow);
+  animation: floatUp 1.5s ease-out forwards;
+  z-index: 30;
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(1.2); }
+}
+
+/* ---------- 合成闪光 ---------- */
+.flash {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: flashBurst 0.4s ease-out forwards;
+  z-index: 25;
+}
+
+.flash-green { background: radial-gradient(circle, rgba(52,211,153,0.8), transparent 70%); }
+.flash-blue  { background: radial-gradient(circle, rgba(96,165,250,0.8), transparent 70%); }
+.flash-purple { background: radial-gradient(circle, rgba(167,139,250,0.8), transparent 70%); }
+.flash-gold  { background: radial-gradient(circle, rgba(251,191,36,0.9), transparent 70%); width: 100px; height: 100px; }
+
+@keyframes flashBurst {
+  0% { transform: scale(0.3); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ---------- 道具掉落动画 ---------- */
+.falling-item {
+  position: absolute;
+  font-size: 28px;
+  animation: itemFall 5s linear forwards;
+  z-index: 15;
+}
+
+.falling-item::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  animation: itemGlow 1s ease-in-out infinite;
+}
+
+@keyframes itemFall {
+  0% { top: -30px; opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes itemGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(251,191,36,0.5); }
+  50% { box-shadow: 0 0 16px rgba(251,191,36,0.8); }
+}
+
+/* ---------- 事件弹窗 ---------- */
+.event-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #FFF;
+  border: 3px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 30px;
+  text-align: center;
+  box-shadow: 6px 6px 0 var(--shadow);
+  z-index: 100;
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.event-popup .emoji {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.event-popup .name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+@keyframes popIn {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* ---------- 董事长特效 ---------- */
+.chairman-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, rgba(251,191,36,0.3), transparent 70%);
+  z-index: 50;
+  pointer-events: none;
+  animation: chairmanFlash 2s ease-out forwards;
+}
+
+@keyframes chairmanFlash {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.chairman-text {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  color: var(--gold);
+  text-shadow: 3px 3px 0 var(--shadow);
+  z-index: 51;
+  pointer-events: none;
+  animation: chairmanTextAnim 2s ease-out forwards;
+}
+
+@keyframes chairmanTextAnim {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+  60% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---------- SS 卷王降临 ---------- */
+.ss-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(251,191,36,0.15);
+  z-index: 49;
+  pointer-events: none;
+  animation: ssFlash 1s ease-out forwards;
+}
+
+.ss-text {
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  color: var(--gold);
+  text-shadow: 2px 2px 0 var(--shadow);
+  z-index: 50;
+  pointer-events: none;
+  animation: ssTextAnim 1.5s ease-out forwards;
+  white-space: nowrap;
+}
+
+@keyframes ssFlash {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes ssTextAnim {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  25% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 380px) {
+  #screen-home h1 { font-size: 32px; }
+  .btn-main { font-size: 18px; padding: 12px 30px; }
+  .hud-level1, .hud-level2 { font-size: 14px; }
+}

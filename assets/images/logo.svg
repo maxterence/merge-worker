@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <!-- 背景 -->
+  <rect width="400" height="200" rx="20" fill="#FFF8F0" stroke="#1A1A2E" stroke-width="5"/>
+  
+  <!-- 圆点纹理 -->
+  <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+    <circle cx="8" cy="8" r="1.5" fill="#E8DDD0"/>
+  </pattern>
+  <rect width="400" height="200" rx="20" fill="url(#dots)" opacity="0.5"/>
+  
+  <!-- 主标题 -->
+  <text x="200" y="85" font-family="'ZCOOL KuaiLe', sans-serif" font-size="56" fill="#FB923C" text-anchor="middle" stroke="#1A1A2E" stroke-width="2">合成打工人</text>
+  
+  <!-- 副标题 -->
+  <text x="200" y="125" font-family="'ZCOOL KuaiLe', sans-serif" font-size="22" fill="#666" text-anchor="middle">60秒从实习生到董事长</text>
+  
+  <!-- 等级链条 -->
+  <text x="200" y="165" font-size="28" text-anchor="middle">💼→📋→👔→📊→🎯→🏢→👔→👑</text>
+  
+  <!-- 装饰线 -->
+  <line x1="40" y1="185" x2="360" y2="185" stroke="#FB923C" stroke-width="3" stroke-dasharray="8,6" opacity="0.5"/>
+</svg>

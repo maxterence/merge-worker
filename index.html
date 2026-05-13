@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>合成打工人</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 首页 -->
+  <div id="screen-home" class="screen active">
+    <div style="font-size:64px; margin-bottom:-10px;">🎮</div>
+    <h1>合成打工人</h1>
+    <p class="subtitle">60秒从实习生到董事长</p>
+    <div class="high-score">🏆 最高年薪：<span id="high-score">0</span></div>
+    <button id="btn-start" class="btn-main">▶️ 开始打工</button>
+    <div class="level-bar">💼→📋→👔→📊→🎯→🏢→👔→👑</div>
+  </div>
+
+  <!-- 第一关：试用期 -->
+  <div id="screen-level1" class="screen">
+    <div class="hud-level1">
+      <span>🔵 试用期</span>
+      <span>目标：组长 👔</span>
+    </div>
+    <canvas id="game-canvas"></canvas>
+  </div>
+
+  <!-- 第二关：正式工 -->
+  <div id="screen-level2" class="screen">
+    <div class="hud-level2">
+      <span id="hud-score">💰 0</span>
+      <span id="hud-timer">⏱️ 60s</span>
+      <span id="hud-best">🏆 0</span>
+    </div>
+    <canvas id="game-canvas-2"></canvas>
+  </div>
+
+  <!-- 结算页 -->
+  <div id="screen-result" class="screen">
+    <h2>⏰ 时间到！</h2>
+    <div id="result-level" style="font-size:20px;"></div>
+    <div id="result-score" style="font-size:28px;"></div>
+    <div id="result-percent" style="font-size:16px; color:#666;"></div>
+    <div id="result-quote" class="quote"></div>
+    <button id="btn-retry" class="btn-main">🔄 再来一局</button>
+    <button id="btn-share" class="btn-secondary">🎴 生成卡片分享</button>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
