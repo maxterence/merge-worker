@@ -103,5 +103,18 @@ export class Physics {
     a.y += ny * overlap;
     b.x -= nx * overlap;
     b.y -= ny * overlap;
+
+    // 限制不超出边界
+    for (const body of [a, b]) {
+      if (body.y + body.radius > this.groundY) {
+        body.y = this.groundY - body.radius;
+        body.vy = 0;
+      }
+      if (body.y - body.radius < 0) {
+        body.y = body.radius;
+      }
+      if (body.x - body.radius < 0) body.x = body.radius;
+      if (body.x + body.radius > this.width) body.x = this.width - body.radius;
+    }
   }
 }
